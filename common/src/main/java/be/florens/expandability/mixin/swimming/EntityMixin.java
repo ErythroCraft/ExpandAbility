@@ -101,13 +101,4 @@ public abstract class EntityMixin {
 
 		return original; // Vanilla behaviour
 	}
-
-	@ModifyExpressionValue(
-			method = "updateFluidInteraction",
-			require = 2,
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isPushedByFluid()Z")
-	)
-	private boolean isPushedByFluid(boolean original) {
-		return Util.shouldPlayerSwim(this, original);
-	}
 }

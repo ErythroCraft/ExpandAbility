@@ -2,6 +2,7 @@ package be.florens.expandability.mixin.swimming;
 
 import be.florens.expandability.Util;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,5 +30,13 @@ public abstract class PlayerMixin {
 	)
 	private boolean cancelSurfaceCheck(boolean original) {
 		return !Util.shouldPlayerSwim(this, !original);
+	}
+
+	// should probably mixin the call sites instead, but NeoForge makes that kinda difficult
+	@ModifyReturnValue(
+			method = "isPushedByFluid", at = @At(value = "RETURN")
+	)
+	private boolean isPushedByFluid(boolean original) {
+		return Util.shouldPlayerSwim(this, original);
 	}
 }
