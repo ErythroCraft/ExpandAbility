@@ -5,7 +5,7 @@ import be.florens.expandability.Util;
 import be.florens.expandability.api.EventResult;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,25 +49,18 @@ public abstract class EntityMixin {
 		return Util.shouldPlayerSwim(this, true);
 	}
 
-	/**
-	 * Prevents the swimming sound from playing when non-vanilla swimming is enabled
-	 */
 	@WrapWithCondition(
 			method = "applyMovementEmissionAndPlaySound",
 			require = 1,
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;waterSwimSound()V")
 	)
 	private boolean shouldPlayWaterSwimSound(Entity entity) {
-		if ((Object) this instanceof Avatar player) {
-			// Repeat the isInWater check, so we don't cancel vanilla swimming sounds
+		if ((Object) this instanceof Player player) {
 			return !player.isInWater() && EventDispatcher.onPlayerSwim(player) == EventResult.SUCCESS;
 		}
         return true;
 	}
 
-	/**
-	 * Take fall damage when in water with water physics disabled
-	 */
 	@WrapWithCondition(
 			method = {
 					"move",
@@ -91,7 +84,8 @@ public abstract class EntityMixin {
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Ljava/lang/Object;)Z")
 	)
 	private boolean fixBlockSpeedFactor(boolean original) {
-		if ((Object) this instanceof Avatar player) {
+		// Hier von Avatar zu Player geändert:
+		if ((Object) this instanceof Player player) {
 			BlockState block = player.level().getBlockState(player.blockPosition());
 
 			if (block.is(Blocks.WATER) && EventDispatcher.onPlayerSwim(player) == EventResult.FAIL) {

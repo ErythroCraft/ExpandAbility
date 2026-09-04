@@ -6,7 +6,7 @@ import be.florens.expandability.api.EventResult;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.player.Player; // Geändert: Player importiert statt Avatar
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +28,8 @@ public abstract class LivingEntityMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidTypeHeight(Lnet/neoforged/neoforge/fluids/FluidType;)D")
     )
     private double setFluidHeight(double original) {
-        if ((Object) this instanceof Avatar player) {
+        // Geändert: instanceof Player statt instanceof Avatar
+        if ((Object) this instanceof Player player) {
             EventResult shouldSwim = EventDispatcher.onPlayerSwim(player);
             return Util.processEventResult(shouldSwim, 1D, 0D, original);
         }
@@ -42,7 +43,8 @@ public abstract class LivingEntityMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityFluidInteraction;getMaxHeightFluidType()Lnet/neoforged/neoforge/fluids/FluidType;")
     )
     private FluidType setMaxHeightFluidType(FluidType original) {
-        if ((Object) this instanceof Avatar player) {
+        // Geändert: instanceof Player statt instanceof Avatar
+        if ((Object) this instanceof Player player) {
             EventResult shouldSwim = EventDispatcher.onPlayerSwim(player);
             return Util.processEventResult(shouldSwim, NeoForgeMod.WATER_TYPE.value(), NeoForgeMod.EMPTY_TYPE.value(), original);
         }

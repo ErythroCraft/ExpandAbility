@@ -22,6 +22,14 @@ configurations {
         canBeResolved = true
         canBeConsumed = false
     }
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
 }
 
 dependencies {
@@ -54,22 +62,3 @@ shadowJar {
 
 shadow.addShadowVariantIntoJavaComponent = false
 
-configurations {
-    apiElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(shadowJar)
-    }
-    runtimeElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(shadowJar)
-    }
-}
-
-publishing {
-    publications {
-        mavenFabric(MavenPublication) {
-            artifactId = rootProject.archives_name + "-" + project.name
-            from components.java
-        }
-    }
-}

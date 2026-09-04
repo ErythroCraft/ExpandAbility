@@ -1,32 +1,21 @@
 package be.florens.expandability.api.forge;
 
 import be.florens.expandability.api.EventResult;
-import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.player.Player; // Geändert von Avatar zu Player
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
-/**
- * Event that allows enabling/disabling the vanilla swimming behaviour even when not in a fluid.
- * Fired multiple times per tick on the client and server.
- *
- * This event has the following {@link EventResult}:
- * <ul>
- *     <li>{@link EventResult#PASS}: Vanilla swimming behaviour</li>
- *     <li>{@link EventResult#SUCCESS}: Always swim, even when not in a fluid</li>
- *     <li>{@link EventResult#FAIL}: Never swim, even when in a fluid</li>
- * </ul>
- */
 public class PlayerSwimEvent extends LivingEvent {
 
-    private final Avatar player;
+    private final Player player; // Geändert zu Player
     private EventResult result = EventResult.PASS;
 
-    public PlayerSwimEvent(Avatar player) {
+    public PlayerSwimEvent(Player player) { // Geändert zu Player
         super(player);
         this.player = player;
     }
 
     @Override
-    public Avatar getEntity() {
+    public Player getEntity() { // Geändert zu Player
         return player;
     }
 

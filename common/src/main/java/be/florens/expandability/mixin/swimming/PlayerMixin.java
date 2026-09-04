@@ -32,11 +32,14 @@ public abstract class PlayerMixin {
 		return !Util.shouldPlayerSwim(this, !original);
 	}
 
-	// should probably mixin the call sites instead, but NeoForge makes that kinda difficult
+	// should probably mixin the call sites instead, but NeoForge makes that kinda
+	// difficult
+	// should probably mixin the call sites instead, but NeoForge makes that kinda
+	// difficult
 	@ModifyReturnValue(
-			method = "isPushedByFluid", at = @At(value = "RETURN")
-	)
-	private boolean isPushedByFluid(boolean original) {
-		return Util.shouldPlayerSwim(this, original);
-	}
+		method = "isPushedByFluid", at = @At(value = "RETURN"), remap = false)
+private boolean isPushedByFluid(boolean original) {
+	return Util.shouldPlayerSwim(this, original);
+}
+
 }

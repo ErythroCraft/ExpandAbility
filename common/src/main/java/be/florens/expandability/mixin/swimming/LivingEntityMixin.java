@@ -4,7 +4,7 @@ import be.florens.expandability.EventDispatcher;
 import be.florens.expandability.Util;
 import be.florens.expandability.api.EventResult;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +27,8 @@ public abstract class LivingEntityMixin extends Entity {
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D")
 	)
 	private double setFluidHeight(double original) {
-		if ((Object) this instanceof Avatar player) {
+		// Hier von Avatar zu Player geändert:
+		if ((Object) this instanceof Player player) {
 			EventResult shouldSwim = EventDispatcher.onPlayerSwim(player);
 			return Util.processEventResult(shouldSwim, 1D, 0D, original);
 		}

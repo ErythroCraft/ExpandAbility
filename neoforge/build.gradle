@@ -22,6 +22,14 @@ configurations {
         canBeResolved = true
         canBeConsumed = false
     }
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
 }
 
 repositories {
@@ -57,22 +65,3 @@ shadowJar {
 
 shadow.addShadowVariantIntoJavaComponent = false
 
-configurations {
-    apiElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(shadowJar)
-    }
-    runtimeElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(shadowJar)
-    }
-}
-
-publishing {
-    publications {
-        mavenNeoForge(MavenPublication) {
-            artifactId = rootProject.archives_name + "-" + project.name
-            from components.java
-        }
-    }
-}
